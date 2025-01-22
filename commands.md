@@ -46,6 +46,38 @@ kubectl label node symon-cluster-worker3 node-role.kubernetes.io/worker=true
 kubectl apply -f deploy-ingress-nginx.yaml
 ```
 
+### Create secret to pull from private registry
+
+Make sure you logged in to your private registry
+
+```shell
+docker login https://<private registry url>
+```
+
+To create the registry credential secret (only applicable if your credential is written to your docker config file and it's unencrypted, default behavior in Linux)
+
+```shell
+kubectl create secret generic <secret name> --from-file=.dockerconfigjson=<path/to/.docker/config.json> --type=kubernetes.io/dockerconfigjson
+```
+
+### Create Config Map from yaml file
+
+```shell
+kubectl apply -f <config map file>.yaml
+```
+
+### Create Secret from kustomization yaml file
+
+```shell
+kubectl apply -k <directory of kustomization>
+```
+
+### Deploy debug pod
+
+```shell
+helm install debug ./charts/custom-chart
+```
+
 ### Create and attach docker container to Kind's network
 
 ```shell

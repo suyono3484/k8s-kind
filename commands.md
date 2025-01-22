@@ -45,3 +45,10 @@ kubectl label node symon-cluster-worker3 node-role.kubernetes.io/worker=true
 ```shell
 kubectl apply -f deploy-ingress-nginx.yaml
 ```
+
+### Create and attach docker container to Kind's network
+
+```shell
+docker run -it --rm --network=kind ubuntu:24.04 /bin/bash
+```
+

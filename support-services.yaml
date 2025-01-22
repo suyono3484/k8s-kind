@@ -1,0 +1,58 @@
+name: kind-support-services
+services:
+  nginx:
+    image: nginx:stable-alpine
+    networks:
+      kind:
+        aliases:
+          - test-nginx
+  postgres:
+    image: postgres:13-alpine
+    ports:
+      - "5432:5432/tcp"
+    environment:
+      POSTGRES_PASSWORD: symon_password
+      POSTGRES_USER: symon_user
+      POSTGRES_DB: symon_database
+    volumes:
+      - ./support-service-data/postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      kind:
+        aliases:
+          - postgres-docker
+  timescaledb:
+    image: timescale/timescaledb:2.13.0-pg13
+    ports:
+      - "5333:5432/tcp"
+    environment:
+      POSTGRES_PASSWORD: timescale
+      POSTGRES_USER: timescale
+      POSTGRES_DB: timescale
+    volumes:
+      - ./support-service-data/timescale:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      kind:
+        aliases:
+          - timescale-docker
+  redis:
+    image: redis:7-alpine
+    command: redis-server
+    ports:
+      - "6379:6379/tcp"
+    volumes:
+      - ./support-service-data/redis:/var/lib/redis
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    restart: unless-stopped
+    networks:
+      kind:
+        aliases:
+          - redis-docker
+
+
+networks:
+  kind:
+    external: true

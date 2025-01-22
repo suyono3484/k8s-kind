@@ -78,6 +78,14 @@ kubectl apply -k <directory of kustomization>
 helm install debug ./charts/custom-chart
 ```
 
+### Restart a service (deployment/daemonset)
+
+Double check the resource that you want to restart. For example, if it's a deployment (managed by helm chart)
+
+```shell
+kubectl rollout restart deployment/<your deployment name>
+```
+
 ### Create and attach docker container to Kind's network
 
 ```shell

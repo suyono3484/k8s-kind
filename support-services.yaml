@@ -51,6 +51,18 @@ services:
       kind:
         aliases:
           - redis-docker
+  proxy:
+    image: gitea.suyono.dev/suyono/tinyproxy:noble
+    command:
+      - "/usr/bin/tinyproxy"
+      - "-d"
+    restart: unless-stopped
+    ports:
+      - "8888:8888/tcp"
+    networks:
+      - kind
+    external_links:
+      - symon-cluster-worker:test.symon.kind
 
 
 networks:

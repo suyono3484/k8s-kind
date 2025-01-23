@@ -46,6 +46,12 @@ kubectl label node symon-cluster-worker3 node-role.kubernetes.io/worker=true
 kubectl apply -f deploy-ingress-nginx.yaml
 ```
 
+Wait until ingress ready
+
+```shell
+kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=90s
+```
+
 ### Create secret to pull from private registry
 
 Make sure you logged in to your private registry
